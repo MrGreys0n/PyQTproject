@@ -2,7 +2,7 @@ import sys
 from PyQt5.QtCore import Qt
 from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLCDNumber, QLineEdit, QColorDialog
 import PyQt5.QtGui as QtGui
-from PyQt5 import QtCore, QIcon
+from PyQt5 import QtCore
 import requests
 
 TRANSLATE = '' 
@@ -17,11 +17,6 @@ class Example(QWidget):
         self.setGeometry(1000, 1000, 1000, 1000)
         self.setWindowTitle('Корректировщик текста')
         
-        exitAction = QAction(QIcon('exit.png'), 'Exit', self)
-        exitAction.setShortcut('Ctrl+Q')
-        exitAction.setStatusTip('Exit application')
-        exitAction.triggered.connect(self.close)
-
         self.btn = QPushButton('Транслит', self)
         self.btn.resize(100, 50)
         self.btn.move(10, 130)
