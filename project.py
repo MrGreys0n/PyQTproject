@@ -7,7 +7,7 @@ import PyQt5.QtGui as QtGui
 from PyQt5 import QtCore
 import requests
 
-DICT_WITH_LANGS = {'Русский': 'ru', 'Испанский': 'sp', 'Английский': 'en',
+DICT_WITH_LANGS = {'Русский': 'ru', 'Испанский': 'es', 'Английский': 'en',
                    'Итальянский': 'it', 'Французский': 'fr', 'Немецкий': 'de',}
 LANGUAGE1, LANGUAGE2 = '', ''
 URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate?'
@@ -22,26 +22,28 @@ class Example(QWidget):
         self.setWindowTitle('Корректировщик текста')
 
         combo = QComboBox(self)
+        combo.addItem("-")
         combo.addItem("Русский")
         combo.addItem("Английский")
         combo.addItem("Испанский")
         combo.addItem("Итальянский")
         combo.addItem("Французский")
         combo.addItem("Немецкий")
-        combo.move(200, 150)
+        combo.move(130, 182)
 
         combo.activated[str].connect(self.onActivated)
 
         combo1 = QComboBox(self)
-        combo1.addItem("Русский")
+        combo1.addItem("-")
         combo1.addItem("Английский")
+        combo1.addItem("Русский")
         combo1.addItem("Испанский")
         combo1.addItem("Итальянский")
         combo1.addItem("Французский")
         combo1.addItem("Немецкий")
-        combo1.move(200, 200)
+        combo1.move(130, 207)
 
-        combo.activated[str].connect(self.onActivated1)
+        combo1.activated[str].connect(self.onActivated1)
 
         
         self.btn = QPushButton('Транслит', self)
@@ -56,13 +58,13 @@ class Example(QWidget):
         self.btn2.resize(100, 50)
         self.btn2.move(220, 130)
 
-        self.btn3 = QPushButton('Перевод (rus-eng\nen-rus', self)
+        self.btn3 = QPushButton('Перевeсти', self)
         self.btn3.resize(100, 50)
-        self.btn3.move(325, 130)
+        self.btn3.move(10, 180)
 
         self.btn4 = QPushButton('Цвет кнопок', self)
         self.btn4.resize(100, 50)
-        self.btn4.move(10, 180)
+        self.btn4.move(5, 40)
 
         self.btn.clicked.connect(self.translit)
 
@@ -81,6 +83,14 @@ class Example(QWidget):
         self.name_label = QLabel(self)
         self.name_label.setText("Выберите тип работы с текстом:")
         self.name_label.move(10, 110)
+
+        self.name_label = QLabel(self)
+        self.name_label.setText("C")
+        self.name_label.move(115, 185)
+
+        self.name_label = QLabel(self)
+        self.name_label.setText("Ha")
+        self.name_label.move(115, 210)
 
         self.name_label = QLabel(self)
         self.name_label.setText("Введите ваш текст")
@@ -109,13 +119,14 @@ class Example(QWidget):
 
     def onActivated(self, text):
         global LANGUAGE1
-        LANGUAGE1 = DICT_WITH_LANGS[text]
-
+        if text in DICT_WITH_LANGS:
+            LANGUAGE1 = DICT_WITH_LANGS[text]
+       
     def onActivated1(self, text):
         global LANGUAGE2
-        LANGUAGE2 = DICT_WITH_LANGS[text]
-
- 
+        if text in DICT_WITH_LANGS:
+            LANGUAGE2 = DICT_WITH_LANGS[text]
+         
     def translit(self):
         text = self.text_input.text()
         d = {"й": "j", "ц": "c", "у": "u", "к": "k", "е": "e", "н": "n",
@@ -189,16 +200,10 @@ class Example(QWidget):
             q.write(translit)
         print('')
 
-    def ru_en(self, t):
-        en = [chr(i) for i in range(65, 123)]
-        if t[0] in en:
-            return 'en-ru'
-        else:
-            return 'ru-en'
-
+    
     def translate_yandex(self):
         text = self.text_input.text()
-        lang = self.ru_en(text) 
+        lang = LANGUAGE1 + '-' + LANGUAGE2
         r = requests.post(URL, data={'key': KEY, 'text': text, 'lang': lang})
         with open('translate.txt', 'w') as q:
             q.write(r.text[r.text.find('['):-1][2:-2])
