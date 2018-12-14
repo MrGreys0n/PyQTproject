@@ -18,7 +18,7 @@ class Example(QWidget):
         self.initUI()
  
     def initUI(self):
-        self.setGeometry(1000, 1000, 1000, 1000)
+        self.setGeometry(1000, 1000, 400, 300)
         self.setWindowTitle('Корректировщик текста')
 
         combo = QComboBox(self)
@@ -83,6 +83,10 @@ class Example(QWidget):
         self.name_label = QLabel(self)
         self.name_label.setText("Выберите тип работы с текстом:")
         self.name_label.move(10, 110)
+
+        self.name_labelq = QLabel(self)
+        self.name_labelq.setText("Здесь будет результат")
+        self.name_labelq.move(10, 240)
 
         self.name_label = QLabel(self)
         self.name_label.setText("C")
@@ -150,7 +154,8 @@ class Example(QWidget):
         translit = ''.join(translit)
         with open('transliteration.txt', 'w') as q:
             q.write(translit)
-
+        self.name_labelq.setText(translit)
+        
     def raskladka_from_rus(self):
         text = self.text_input.text()
         d = {"й": "q", "ц": "w", "у": "e", "к": "r", "е": "t", "н": "y",
@@ -174,6 +179,7 @@ class Example(QWidget):
         translit = ''.join(translit)
         with open('raskladka_from_rus.txt', 'w') as q:
             q.write(translit)
+        self.name_labelq.setText(translit)
         
     def raskladka_from_eng(self):
         text = self.text_input.text()
@@ -198,7 +204,7 @@ class Example(QWidget):
         translit = ''.join(translit)
         with open('raskladka_from_eng.txt', 'w') as q:
             q.write(translit)
-        print('')
+        self.name_labelq.setText(translit)
 
     
     def translate_yandex(self):
@@ -207,6 +213,7 @@ class Example(QWidget):
         r = requests.post(URL, data={'key': KEY, 'text': text, 'lang': lang})
         with open('translate.txt', 'w') as q:
             q.write(r.text[r.text.find('['):-1][2:-2])
+        self.name_labelq.setText(r.text[r.text.find('['):-1][2:-2])
         
            
 if __name__ == '__main__':
