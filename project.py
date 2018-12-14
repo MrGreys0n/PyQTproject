@@ -1,11 +1,15 @@
 import sys
 from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QWidget, QApplication, QPushButton, QLabel, QLCDNumber, QLineEdit, QColorDialog, QAction
+from PyQt5.QtWidgets import (QWidget, QApplication, QPushButton,
+                             QLabel, QLCDNumber, QLineEdit,
+                             QColorDialog, QAction, QComboBox)
 import PyQt5.QtGui as QtGui
 from PyQt5 import QtCore
 import requests
 
-TRANSLATE = '' 
+DICT_WITH_LANGS = {'Русский': 'ru', 'Испанский': 'sp', 'Английский': 'en',
+                   'Итальянский': 'it', 'Французский': 'fr', 'Немецкий': 'de',}
+LANGUAGE1, LANGUAGE2 = '', ''
 URL = 'https://translate.yandex.net/api/v1.5/tr.json/translate?'
 KEY = 'trnsl.1.1.20160119T035517Z.50c6906978ef1961.08d0c5ada49017ed764c042723895ffab867be7a' 
 class Example(QWidget):
@@ -16,6 +20,29 @@ class Example(QWidget):
     def initUI(self):
         self.setGeometry(1000, 1000, 1000, 1000)
         self.setWindowTitle('Корректировщик текста')
+
+        combo = QComboBox(self)
+        combo.addItem("Русский")
+        combo.addItem("Английский")
+        combo.addItem("Испанский")
+        combo.addItem("Итальянский")
+        combo.addItem("Французский")
+        combo.addItem("Немецкий")
+        combo.move(200, 150)
+
+        combo.activated[str].connect(self.onActivated)
+
+        combo1 = QComboBox(self)
+        combo1.addItem("Русский")
+        combo1.addItem("Английский")
+        combo1.addItem("Испанский")
+        combo1.addItem("Итальянский")
+        combo1.addItem("Французский")
+        combo1.addItem("Немецкий")
+        combo1.move(200, 200)
+
+        combo.activated[str].connect(self.onActivated1)
+
         
         self.btn = QPushButton('Транслит', self)
         self.btn.resize(100, 50)
@@ -79,6 +106,14 @@ class Example(QWidget):
             self.btn.setStyleSheet(
                 "background-color: {}".format(color.name())
             )
+
+    def onActivated(self, text):
+        global LANGUAGE1
+        LANGUAGE1 = DICT_WITH_LANGS[text]
+
+    def onActivated1(self, text):
+        global LANGUAGE2
+        LANGUAGE2 = DICT_WITH_LANGS[text]
 
  
     def translit(self):
