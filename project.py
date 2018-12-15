@@ -43,9 +43,7 @@ class Example(QWidget):
         combo.addItem('Словенский')
         combo.addItem('Украинский')
         combo.addItem("Французский")
-        
-        
-        
+
         combo.move(130, 182)
 
         combo.activated[str].connect(self.onActivated)
@@ -69,6 +67,14 @@ class Example(QWidget):
 
         combo1.activated[str].connect(self.onActivated1)
 
+        combomenu = QComboBox(self)
+        combomenu.addItem('Настройки')
+        combomenu.addItem('Цвет Кнопок')
+        combomenu.addItem('Шрифт')
+        combomenu.move(10, 25)
+
+        combomenu.activated[str].connect(self.onActivatedMenu)
+
         self.btn = QPushButton('Транслит', self)
         self.btn.resize(100, 50)
         self.btn.move(10, 130)
@@ -78,17 +84,13 @@ class Example(QWidget):
         self.btn1.move(115, 130)
 
         self.btn2 = QPushButton('Раскладка\nс английского', self)
-        self.btn2.resize(100, 50)
+        self.btn2.resize(120, 50)
         self.btn2.move(220, 130)
 
         self.btn3 = QPushButton('Перевeсти', self)
         self.btn3.resize(100, 50)
         self.btn3.move(10, 180)
-
-        self.btn4 = QPushButton('Цвет кнопок', self)
-        self.btn4.resize(100, 50)
-        self.btn4.move(5, 40)
-
+        
         self.btn.clicked.connect(self.translit)
 
         self.btn1.clicked.connect(self.raskladka_from_rus)
@@ -97,53 +99,66 @@ class Example(QWidget):
 
         self.btn3.clicked.connect(self.translate_yandex)
 
-        self.btn4.clicked.connect(self.run)
-
         self.text_input = QLineEdit(self)
-        self.text_input.move(110, 10)
+        self.text_input.move(115, 10)
         self.text_input.resize(275, 100)
 
         self.name_label = QLabel(self)
         self.name_label.setText("Выберите тип работы с текстом:")
         self.name_label.move(10, 110)
+        self.name_label.setFont(QtGui.QFont(None, 10, QtGui.QFont.Bold))
+
+        self.name_label = QLabel(self)
+        q = "Если текст, полученный в результате работы программы\nне отображается"
+        w = ' полностью, то он запишется в .txt файл'
+        self.name_label.setText(q + w)
+        self.name_label.move(10, 260)
+        self.name_label.setFont(QtGui.QFont(None, 10, QtGui.QFont.Bold))
 
         self.name_labelq = QLabel(self)
-        self.name_labelq.setText("Здесь будет результат")
+        self.name_labelq.setText("Здесь будет результат                           ")
         self.name_labelq.move(10, 240)
+        self.name_labelq.setFont(QtGui.QFont("Times New Roman", 10))
 
-        self.name_label = QLabel(self)
-        self.name_label.setText("C")
-        self.name_label.move(115, 185)
+        self.name_labelfrom = QLabel(self)
+        self.name_labelfrom.setText("C")
+        self.name_labelfrom.move(115, 185)
 
-        self.name_label = QLabel(self)
-        self.name_label.setText("Ha")
-        self.name_label.move(115, 210)
+        self.name_labelto = QLabel(self)
+        self.name_labelto.setText("Ha")
+        self.name_labelto.move(115, 210)
 
-        self.name_label = QLabel(self)
-        self.name_label.setText("Введите ваш текст")
-        self.name_label.move(10, 10)
+        self.name_labelin = QLabel(self)
+        self.name_labelin.setText("Введите ваш текст")
+        self.name_labelin.move(10, 10)
 
         self.show()
 
-    def run(self):
-        color = QColorDialog.getColor()
-        if color.isValid():
-            self.btn1.setStyleSheet(
-                "background-color: {}".format(color.name())
-            )
-            self.btn2.setStyleSheet(
-                "background-color: {}".format(color.name())
-            )
-            self.btn3.setStyleSheet(
-                "background-color: {}".format(color.name())
-            )
-            self.btn4.setStyleSheet(
-                "background-color: {}".format(color.name())
-            )
-            self.btn.setStyleSheet(
-                "background-color: {}".format(color.name())
-            )
-
+    
+    def onActivatedMenu(self, text):
+        if text == 'Цвет Кнопок':
+            color = QColorDialog.getColor()
+            if color.isValid():
+                self.btn1.setStyleSheet(
+                    "background-color: {}".format(color.name())
+                )
+                self.btn2.setStyleSheet(
+                    "background-color: {}".format(color.name())
+                )
+                self.btn3.setStyleSheet(
+                    "background-color: {}".format(color.name())
+                )
+                self.btn.setStyleSheet(
+                    "background-color: {}".format(color.name())
+                )
+        if text == 'Шрифт':
+            self.btn1.setFont(QtGui.QFont("Times New Roman", 11, QtGui.QFont.Bold))
+            self.btn.setFont(QtGui.QFont("Times New Roman", 11, QtGui.QFont.Bold))
+            self.btn2.setFont(QtGui.QFont("Times New Roman", 11, QtGui.QFont.Bold))
+            self.btn3.setFont(QtGui.QFont("Times New Roman", 11, QtGui.QFont.Bold))
+            self.name_labelq.setFont(QtGui.QFont("Times New Roman", 11))
+            
+            
     def onActivated(self, text):
         global LANGUAGE1
         if text in DICT_WITH_LANGS:
