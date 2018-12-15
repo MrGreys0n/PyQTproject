@@ -218,7 +218,7 @@ class Example(QWidget):
             else:
                 data.append(symbol)
         data = ''.join(data)
-        with open('raskladka_from_rus.txt', 'w') as q:
+        with open('raskladka.txt', 'w') as q:
             q.write(data)
         self.name_labelq.setText(data)
 
@@ -243,7 +243,7 @@ class Example(QWidget):
             else:
                 data.append(symbol)
         data = ''.join(data)
-        with open('raskladka_from_eng.txt', 'w') as q:
+        with open('raskladka.txt', 'w') as q:
             q.write(data)
         self.name_labelq.setText(data)
 
