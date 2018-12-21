@@ -25,7 +25,7 @@ class Example(QWidget):
         self.initUI()
 
     def initUI(self):
-        self.setGeometry(1000, 1000, 400, 300)
+        self.setGeometry(100, 150, 400, 300)
         self.setWindowTitle('TEXT ENGINE')
 
         combo = QComboBox(self)
